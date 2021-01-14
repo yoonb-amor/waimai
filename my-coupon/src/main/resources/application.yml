@@ -1,0 +1,63 @@
+server:
+  port: 8848
+  servlet:
+    context-path: /coupon
+    encoding:
+      charset: UTF-8
+logging:
+  config: classpath:logback.xml
+
+spring:
+  datasource:
+    druid:
+      name: druidDataSource
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url:  jdbc:mysql://localhost:3306/coupon?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
+      username:  root
+      password:  123
+      initial-size:  10
+      max-active:  50
+      min-idle:  10
+      max-wait:  60000
+      pool-prepared-statements:  true
+      max-pool-prepared-statement-per-connection-size:  20
+      validation-query:  SELECT 1 FROM DUAL
+      test-on-borrow:  false
+      test-on-return:  false
+      test-while-idle:  true
+      time-between-eviction-runs-millis:  60000
+      filters:  stat,wall
+pagehelper:
+  helperDialect:  mysql
+  reasonable: true
+  supportMethodsArguments:  true
+  params: count=countSql
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.baiyue.huatie.common.entry
+  global-config:
+    # 数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: auto
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: not_empty
+      #驼峰下划线转换
+      table-underline: true
+      #是否开启大写命名，默认不开启
+      #capital-mode: true
+      #逻辑删除配置
+      #logic-delete-value: 1
+      #logic-not-delete-value: 0
+      db-type: mysql
+    #刷新mapper 调试神器
+    refresh: true
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    # 是否将sql打印到控制面板(该配置会将sql语句和查询的结果都打印到控制台)
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
